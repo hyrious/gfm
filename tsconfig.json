@@ -1,0 +1,9 @@
+{
+    "include": ["src"],
+    "compilerOptions": {
+        "jsx": "react",
+        "noEmit": true,
+        "esModuleInterop": true,
+        "lib": ["dom", "esnext"]
+    }
+}
