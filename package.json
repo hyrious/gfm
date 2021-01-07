@@ -1,18 +1,38 @@
 {
     "name": "@hyrious/gfm",
-    "author": "hyrious",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/hyrious/gfm/issues"
+    "author": {
+        "name": "hyrious",
+        "email": "hyrious@outlook.com",
+        "url": "https://hyrious.me"
     },
-    "homepage": "https://github.com/hyrious/gfm#readme",
+    "description": "Use GitHub API to render markdown.",
+    "license": "MIT",
+    "repository": "hyrious/gfm",
+    "main": "dist/index.js",
+    "types": "src/index.d.ts",
+    "module": "dist/index.browser.mjs",
+    "browser": "dist/index.browser.js",
+    "exports": {
+        "import": "./src/index.mjs",
+        "require": "./dist/index.js"
+    },
+    "bin": {
+        "gfm": "src/bin.mjs"
+    },
+    "engines": {
+        "node": ">=14"
+    },
     "keywords": [
         "markdown"
     ],
     "files": [
-        "src"
+        "src",
+        "dist"
     ],
+    "sideEffects": false,
     "scripts": {},
     "dependencies": {},
-    "devDependencies": {}
+    "devDependencies": {
+        "rollup": "^2.36.1"
+    }
 }

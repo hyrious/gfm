@@ -64,6 +64,24 @@ I personally made this package for a reference of the correct way
 to support multiple environments in one package.
 You (Me) should look at package.json for more details.
 
+**package.json with comments**
+
+```js
+{
+    // node's require and import, to override it, see "exports"
+    "main": "dist/index.js",
+    // https://nodejs.org/api/packages.html#packages_conditional_exports
+    "exports": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js"
+    },
+    // front-end bundler read this (like vite or webpack)
+    "module": "dist/index.browser.mjs",
+    // cdn like jsdelivr read this
+    "browser": "dist/index.browser.js"
+}
+```
+
 ### Licence
 
 MIT @ [hyrious](https://github.com/hyrious)
