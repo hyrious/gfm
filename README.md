@@ -1,6 +1,6 @@
 ## Preview GitHub Flavored Markdown
 
-This repo provides a [site](https://hyrious.me/gfm), a cli tool,
+This repo provides a cli tool,
 a nodejs library and a deno library. Below is the library description.
 
 ### Install
@@ -19,7 +19,7 @@ As cli:
 
 > Note: only one \*.md maybe passed to `gfm`, multiple files are ignored.
 
-```powershell
+```shell-session
 > gfm file.md
 <p>content of this file</p>
 > cat file.md | gfm
