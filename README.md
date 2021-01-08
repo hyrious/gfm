@@ -24,8 +24,6 @@ As cli:
 <p>content of this file</p>
 > cat file.md | gfm
 <p>content of this file</p>
-> gfm --css
-.markdown-body{...}...
 # start a local server (like the site, with hot reloading enabled)
 > gfm --serve file.md
 # you may want to use a token to increase rate limit,
@@ -44,10 +42,10 @@ const html = await render("# markdown", { token, rateLimit });
 console.log(rateLimit, html);
 ```
 
-As deno library:
+As deno library (you have to use it with `--allow-net`):
 
 ```ts
-import { render } from "https://esm.run/@hyrious/gfm/mod.ts";
+import { render } from "https://esm.run/@hyrious/gfm/src/index.mjs";
 // same interface as nodejs library
 ```
 
@@ -72,11 +70,11 @@ You (Me) should look at package.json for more details.
     "main": "dist/index.js",
     // https://nodejs.org/api/packages.html#packages_conditional_exports
     "exports": {
-        "import": "./dist/index.mjs",
+        "import": "./src/index.mjs",
         "require": "./dist/index.js"
     },
     // front-end bundler read this (like vite or webpack)
-    "module": "dist/index.browser.mjs",
+    "module": "src/index.browser.mjs",
     // cdn like jsdelivr read this
     "browser": "dist/index.browser.js"
 }
