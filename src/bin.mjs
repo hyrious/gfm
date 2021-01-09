@@ -140,12 +140,21 @@ async function main() {
     let serve = false;
     let requireToken = false;
     let showRateLimit = false;
+    let showHelp = false;
     let file = null;
     for (const arg of args) {
         if (arg === "--serve") serve = true;
         if (arg === "--token") requireToken = true;
         if (arg === "--limit") showRateLimit = true;
+        if (arg === "--help") showHelp = true;
         if (file === null && !arg.startsWith("-")) file = arg;
+    }
+    if (showHelp) {
+        console.log(`example:
+
+    gfm README.md --token --serve --limit
+    cat README.md | gfm --token --serve`)
+        process.exit();
     }
     let token = null;
     if (requireToken) {

@@ -71,7 +71,6 @@ As iife or umd (like jquery):
 The library is written in .mjs to use vanilla `import` in nodejs (since 14).
 It then uses rollup to convert mjs to cjs for `require` users.
 It uses `browser`, `module` and conditional exports in package.json to support many platforms.
-For the web site, it uses vite for development and bundling.
 
 I personally made this package for a reference of the correct way
 to support multiple environments in one package.
