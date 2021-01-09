@@ -1,6 +1,6 @@
 {
     "name": "@hyrious/gfm",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": {
         "name": "hyrious",
         "email": "hyrious@outlook.com",
@@ -32,7 +32,7 @@
     ],
     "sideEffects": false,
     "scripts": {
-        "build": "rollup src/index.mjs src/index.browser.mjs -d dist -f cjs -e https -p terser -m"
+        "build": "rollup -c"
     },
     "dependencies": {},
     "devDependencies": {

@@ -45,8 +45,23 @@ console.log(rateLimit, html);
 As deno library (you have to use it with `--allow-net`):
 
 ```ts
-import { render } from "https://esm.run/@hyrious/gfm/src/index.mjs";
+import { render } from "https://esm.run/@hyrious/gfm";
 // same interface as nodejs library
+```
+
+As native browser module:
+
+```html
+<script type="module">
+    import { render } from "https://esm.run/@hyrious/gfm";
+</script>
+```
+
+As iife or umd (like jquery):
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@hyrious/gfm"></script>
+<script>GFM.render("# hello").then(text => {})</script>
 ```
 
 > Note: render results are not cached, you should implement caching on your own.

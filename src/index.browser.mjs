@@ -22,9 +22,9 @@ export async function render(text, options = null) {
     });
     if (options?.rateLimit) {
         Object.assign(options.rateLimit, {
-            limit: res.headers["X-RateLimit-Limit"],
-            remaining: res.headers["X-RateLimit-Remaining"],
-            reset: res.headers["X-RateLimit-Reset"],
+            limit: res.headers.get("X-RateLimit-Limit"),
+            remaining: res.headers.get("X-RateLimit-Remaining"),
+            reset: res.headers.get("X-RateLimit-Reset"),
         });
     }
     return await res.text();
