@@ -12,7 +12,6 @@ export async function render(text, options = null) {
     const headers = {
         "Content-Type": "application/json",
         Accept: "application/vnd.github.v3+json",
-        "User-Agent": "Node.js",
     };
     if (options?.token) {
         headers.Authorization = `token ${options.token}`;

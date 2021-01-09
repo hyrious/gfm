@@ -1,6 +1,6 @@
 {
     "name": "@hyrious/gfm",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "author": {
         "name": "hyrious",
         "email": "hyrious@outlook.com",
@@ -12,6 +12,7 @@
     "main": "dist/index.js",
     "types": "src/index.d.ts",
     "module": "src/index.browser.mjs",
+    "browser": "dist/index.browser.js",
     "exports": {
         "import": "./src/index.mjs",
         "require": "./dist/index.js"

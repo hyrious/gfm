@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview GFM</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css">
+    <style>
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+    </style>
+    <script type="module">
+        import { render } from "https://esm.run/@hyrious/gfm";
+
+        let token = sessionStorage.getItem('github-token') ?? localStorage.getItem('github-token');
+        window.saveToken = function saveToken(local = false) {
+            token = document.getElementById('token').value;
+            sessionStorage.setItem('github-token', token);
+            if (local) localStorage.setItem('github-token', token);
+        }
+
+        window.clearToken = function clearToken() {
+            localStorage.removeItem('github-token');
+            document.getElementById('token').value = '';
+            token = '';
+        }
+
+        let isHidden = localStorage.getItem('hide-github-token') === 'true';
+        window.toggleHide = function toggleHide() {
+            isHidden = !isHidden;
+            localStorage.setItem('hide-github-token', isHidden)
+            if (isHidden) {
+                document.getElementById('token').type = 'password';
+                document.getElementById('hide-btn').textContent = 'Show';
+            } else {
+                document.getElementById('token').type = 'text';
+                document.getElementById('hide-btn').textContent = 'Hide';
+            }
+        }
+
+        function loadFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async e => {
+                const text = e.target.result;
+                const rateLimit = {};
+                const html = await render(text, { token, rateLimit });
+                console.log(rateLimit);
+                document.body.innerHTML = html;
+            };
+            reader.readAsText(file);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (token) {
+                document.getElementById('token').value = token
+            }
+            if (isHidden) {
+                document.getElementById('token').type = 'password';
+                document.getElementById('hide-btn').textContent = 'Show';
+            }
+            document.body.addEventListener('dragover', e => {
+                e.preventDefault();
+                document.body.style.opacity = .4;
+            });
+            document.body.addEventListener('drop', e => {
+                e.preventDefault();
+                document.body.style.opacity = '';
+                loadFile(e.dataTransfer.files[0]);
+            });
+            document.body.addEventListener('dragend', e => {
+                e.preventDefault();
+                e.dataTransfer.clearData();
+            });
+        })
+    </script>
+</head>
+<body class="markdown-body">
+    <h2>Usage</h2>
+    <p>Drag & drop a markdown file here.</p>
+    <h3>Config</h3>
+    <p><label for="token">GitHub API Token: </label>
+    <input id="token" onchange="saveToken()">
+    <button onclick="saveToken(true)">Save</button>
+    <button onclick="clearToken()">Clear</button>
+    <button id="hide-btn" onclick="toggleHide()">Hide</button>
+    <span id="info"></span></p>
+    <blockquote>Note: it saves your github token to localStorage with key <code>github-token</code>.</blockquote>
+    <p>To get rate-limit, open the browser console.</p>
+    <h3>Repository</h3>
+    <p><a href="https://github.com/hyrious/gfm">hyrious/gfm</a>, MIT license.</p>
+</body>
+</html>

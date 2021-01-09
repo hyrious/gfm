@@ -30,9 +30,9 @@ export function render(text, options = null) {
             (res) => {
                 if (options?.rateLimit) {
                     Object.assign(options.rateLimit, {
-                        limit: res.headers["X-RateLimit-Limit"],
-                        remaining: res.headers["X-RateLimit-Remaining"],
-                        reset: res.headers["X-RateLimit-Reset"],
+                        limit: res.headers["X-RateLimit-Limit".toLowerCase()],
+                        remaining: res.headers["X-RateLimit-Remaining".toLowerCase()],
+                        reset: res.headers["X-RateLimit-Reset".toLowerCase()],
                     });
                 }
                 const chunks = [];

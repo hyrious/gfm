@@ -12,22 +12,24 @@ function askForToken() {
         stderr.write("Input token (invisible): ");
         stdin.resume();
         stdin.setRawMode(true);
-        /** @param {Buffer} c */
-        function fn(c) {
+        let fn;
+        const stop = () => {
+            stderr.write("\n");
+            stdin.removeListener("data", fn);
+            stdin.setRawMode(false);
+            stdin.pause();
+        };
+        // prettier-ignore
+        stdin.on("data", fn = (c) => {
             switch (c.toString()) {
                 case "\u0004":
                 case "\r":
                 case "\n":
-                    stderr.write("\n");
-                    stdin.removeListener("data", fn);
-                    stdin.setRawMode(false);
-                    stdin.pause();
+                    stop();
                     return resolve(input.replace(/\r$/, ""));
                 case "\u0003":
-                    stderr.write("^C\n");
-                    stdin.removeListener("data", fn);
-                    stdin.setRawMode(false);
-                    stdin.pause();
+                    stderr.write("^C");
+                    stop();
                     return process.exit();
                 default:
                     if (c.readInt8() === 127) {
@@ -36,8 +38,7 @@ function askForToken() {
                         input += c.toString();
                     }
             }
-        }
-        stdin.on("data", fn);
+        });
     });
 }
 
@@ -62,8 +63,9 @@ async function listenAndServe(file, options) {
         if (remembered !== now) {
             remembered = now;
             const html = await render(now, options);
+            const data = { html, rateLimit: options.rateLimit };
             for (const { res } of clients) {
-                res.write("data: " + JSON.stringify(html) + "\n\n");
+                res.write("data: " + JSON.stringify(data) + "\n\n");
             }
         }
     });
@@ -100,16 +102,15 @@ async function listenAndServe(file, options) {
                 res.setHeader("Content-Type", "text/javascript");
                 res.write(`const source = new EventSource('/__server');
 source.onmessage = ({ data }) => {
-    console.log('[gfm] refresh');
-    document.body.innerHTML = JSON.parse(data);
+    const { html, rateLimit } = JSON.parse(data);
+    console.log('[gfm] refresh', rateLimit);
+    document.body.innerHTML = html;
 }`);
                 res.end();
             } else if (pathname === "/__server") {
                 const client = { res };
                 clients.add(client);
-                req.connection.addListener("close", () =>
-                    clients.delete(client)
-                );
+                req.socket.addListener("close", () => clients.delete(client));
                 res.writeHead(200, {
                     "Content-Type": "text/event-stream",
                     "Cache-Control": "no-cache",
@@ -117,7 +118,8 @@ source.onmessage = ({ data }) => {
                 });
                 res.write(": this is a comment\n\n");
                 const html = await render(readFileSync(file, "utf-8"), options);
-                res.write("data: " + JSON.stringify(html) + "\n\n");
+                const data = { html, rateLimit: options.rateLimit };
+                res.write("data: " + JSON.stringify(data) + "\n\n");
             } else {
                 res.writeHead(404);
                 res.write("not found");
@@ -137,10 +139,12 @@ async function main() {
     const args = process.argv.slice(2);
     let serve = false;
     let requireToken = false;
+    let showRateLimit = false;
     let file = null;
     for (const arg of args) {
         if (arg === "--serve") serve = true;
         if (arg === "--token") requireToken = true;
+        if (arg === "--limit") showRateLimit = true;
         if (file === null && !arg.startsWith("-")) file = arg;
     }
     let token = null;
@@ -163,6 +167,9 @@ async function main() {
             text = await readAllStdin();
         }
         console.log(await render(text, { token, rateLimit }));
+        if (showRateLimit) {
+            console.log(rateLimit);
+        }
     }
 }
 
