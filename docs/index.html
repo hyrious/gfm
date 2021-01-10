@@ -58,10 +58,19 @@
                 const html = await render(text, { token, rateLimit });
                 console.log(rateLimit);
                 document.body.innerHTML = html;
+                setTimeout(() => {
+                    const first = document.body.firstChild;
+                    if (first.nodeType === 1 &&
+                        first.tagName.toLowerCase().match(/h\d/)) {
+                        document.title = first.textContent;
+                    } else {
+                        document.title = 'Preview GFM';
+                    }
+                });
             };
             reader.readAsText(file);
         }
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             if (token) {
                 document.getElementById('token').value = token
