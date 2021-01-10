@@ -1,5 +1,7 @@
 ## Preview GitHub Flavored Markdown
 
+[![GitHub Repo](https://img.shields.io/badge/github-hyrious/gfm-blue)](https://github.com/hyrious/gfm/) ![total lines](https://img.shields.io/tokei/lines/github/hyrious/gfm) [![npm package](https://img.shields.io/npm/v/@hyrious/gfm)](https://www.npmjs.com/package/@hyrious/gfm) [![install size](https://packagephobia.com/badge?p=@hyrious/gfm)](https://packagephobia.com/result?p=@hyrious/gfm)
+
 This repo provides a [site](https://hyrious.me/gfm), a cli tool,
 a nodejs library and a deno library. Below is the library description.
 
