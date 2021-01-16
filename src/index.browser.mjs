@@ -19,6 +19,7 @@ export async function render(text, options = null) {
     const res = await fetch("https://api.github.com/markdown", {
         method: "POST",
         body: JSON.stringify({ text }),
+        headers,
     });
     if (options?.rateLimit) {
         Object.assign(options.rateLimit, {
